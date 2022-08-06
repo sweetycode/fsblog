@@ -1,0 +1,12 @@
+{
+  "name": "fsblog",
+  "version": "0.1.0",
+  "description": "common utilities for blog site of nextjs",
+  "main": "index.js",
+  "author": "ssp1024",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "marked": "^4.0.18"
+  }
+}
