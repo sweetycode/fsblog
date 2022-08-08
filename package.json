@@ -1,6 +1,6 @@
 {
   "name": "fsblog",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "common utilities for blog site of nextjs",
   "main": "index.js",
   "author": "ssp1024",

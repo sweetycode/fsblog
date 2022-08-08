@@ -33,7 +33,7 @@ function parseFrontMatter(frontmatter) {
  * @return {{summary: string, markdown: string, title: string}}
  */
 function parseMarkdown(markdown) {
-    let titlePattern = /(?:\s*\n)?# [ \t]*([^\n]+)\n/msu
+    let titlePattern = /^(?:\s*\n)?# [ \t]*([^\n]+)\n/msu
     let morePattern = /\s+<!-- *more *-->\s+/imsu
     let summary = ''
     let title = ''
@@ -51,6 +51,36 @@ function parseMarkdown(markdown) {
     return {title, summary, markdown}
 }
 
+
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+marked.use({
+    renderer: {
+        code(code, infostring) {
+            if (!infostring) {
+                return false
+            }
+            let lang = infostring.split(' ', 1)[0]
+            if ('diagram' == lang) {
+                let titleMatch = infostring.match(/title=(\w+)/ui)
+                let titleHtml = titleMatch ? `<div class="diagram-title">${titleMatch[1]}</div>` : ''
+                return `<div class="diagram-box"><div class="mermaid">${escapeHtml(code)}</div>${titleHtml}</div>`
+            }
+            return `<pre><code class="language-${lang}">${escapeHtml(code)}</code></pre>`
+        },
+        heading(text, level) {
+            const escapedText = text.trim().toLowerCase().replace(/[^\w]+/g, '-').replace(/^-+|-+$/g, '')
+            return `<h${level} id="${escapedText}">${text}</h${level}>`;
+        }
+    }
+})
 
 function render(markdown) {
     return marked.parse(markdown)

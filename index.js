@@ -1,5 +1,11 @@
-const posts = require('./src/posts')
+let {getAllPosts, getPostData, preparePostsData, getCategoryPosts} = require('./src/posts')
 
 
-exports.getAllPosts = posts.getAllPosts
-exports.getPostData = posts.getPostData
+exports.getAllPosts = getAllPosts
+exports.getPostData = getPostData
+exports.preparePostsData = preparePostsData
+exports.getCategoryPosts = getCategoryPosts
+
+exports.getAllCategories = function() {
+    return require.resolve(path.join(process.cwd(), 'lib/categories.js'))
+}
